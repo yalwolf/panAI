@@ -1,16 +1,14 @@
 // ==UserScript==
 // @name              网盘智能识别助手Plus
 // @namespace         https://github.com/yalwolf/panAI
-// @version           2.0.5
+// @version           2.0.7
 // @author            一只阿狼哒&YouXiaoHou
 // @icon              https://js.alwolf.cn/images/panurl.png
 // @icon64            https://js.alwolf.cn/images/panurl.png
-// @description       AI智能识别选中文字中的【网盘链接】和【提取码】，识别成功打开网盘链接并自动填写提取码，省去手动复制提取码在输入的烦恼。支持百度网盘、腾讯微云、蓝奏云、天翼云、和彩云、迅雷云盘、123云盘、Google云、坚果云、360云盘。
+// @description       AI智能识别选中文字中的【网盘链接】和【提取码】，识别成功打开网盘链接并自动填写提取码，省去手动复制提取码在输入的烦恼。支持百度网盘、腾讯微云、蓝奏云、天翼云、和彩云、迅雷云盘、123云盘、Google云、坚果云、360云盘、城通网盘(仅识别)。
 // @license           AGPL
 // @homepage          https://js.alwolf.cn/
 // @supportURL        https://github.com/yalwolf/panAI
-// @updateURL         https://js.alwolf.cn/js/panurl.js
-// @downloadURL       https://js.alwolf.cn/js/panurl.js
 // @match             *://*/*
 // @require           https://unpkg.com/sweetalert2@10.16.6/dist/sweetalert2.min.js
 // @resource          swalStyle https://unpkg.com/sweetalert2@10.16.6/dist/sweetalert2.min.css
@@ -195,6 +193,14 @@
             name: 'Google云盘',
             storage: 'hash'
         },
+       ctfilepan: {
+            reg: /((?:https?:\/\/)?url94\.ctfile\.com\/d\/[A-Za-z0-9_\-]+)/,
+            host: /url94\.ctfile\.com/,
+            input: ['#accessCode'],
+            button: ['#submitBtn'],
+            name: '城通网盘',
+            storage: 'hash'
+        },
     };
     let main = {
         lastText: "lorem&",
@@ -257,8 +263,11 @@
                         toast: true,
                         showCancelButton: true,
                         position: 'top',
-                        title: `发现<span style="color: #2778c4;margin: 0 5px;">${name}</span>链接`,
-                        html: `<span style="font-size: 0.8em;">${!!pwd ? '密码：' + pwd : '是否打开？'}</span>`,
+                        title: `发现<span style="color: #2778c4;margin: 0 5px;">网盘</span>链接`,
+                        html: `<div>链接：<span style="color:blue;font-size: 0.8em;">${link}</span></div>
+                        <div>提取码：<span style="color:blue;font-size: 0.8em;">${pwd}</span></div>
+                        <div>类型：<span style="color:blue;font-size: 0.8em;">${name}</span></div>
+                        <span style="font-size: 0.8em;">是否打开</span><span style="color:#000;font-size: 0.8em;">’？</span>`,
                         confirmButtonText: '打开',
                         cancelButtonText: '关闭',
                         customClass
